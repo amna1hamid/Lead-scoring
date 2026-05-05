@@ -6,16 +6,23 @@ def categorize_lead(score):
     else:
         return "Low Value"
 
+    if category == "High Value":
+        st.success("This lead is likely to convert. Focus sales efforts here.")
+    elif category == "Medium Value":
+        st.warning("This lead needs nurturing.")
+    else:
+        st.error("Low priority lead.")
+
 
 def explain_lead(data):
     reasons = []
 
-    if data["purchase_amount"] > 50000:
+    if data["purchase_amount"] > 20000:
         reasons.append("High Purchase Activity")
     if data["visits"] > 5:
         reasons.append("Frequent visits")
-    if data["time_spent"] > 10:
-        reasons.append("High engagement")
+    if data["time_spent"] > 300:
+        reasons.append("Strong engagement")
 
     return ", ".join(reasons)
 
@@ -25,12 +32,13 @@ st.title("AI Lead Scoring System")
 
 purchase_amount = st.number_input("purchase amount")
 visits = st.number_input("Website Visits")
-time_spent = st.number_input("Time Spent on Site (in seconds)")
+time_minutes = st.number_input("Time Spent on Site (mintues)")
+time_spent=time_minutes * 60
 
 if st.button("Predict"):
 
     # Simple scoring logic (replace with your model later)
-    score = (purchase_amount * 0.4 + visits * 5 + time_spent * 0.1) / 10
+    score = min(100,(purchase_amount * 0.01 + visits * 10 + time_spent * 0.05))
 
     category = categorize_lead(score)
     reason = explain_lead({
@@ -43,5 +51,3 @@ if st.button("Predict"):
     st.write(f"### Category: {category}")
     st.write(f"### Reason: {reason}")
 
-minutes=time_spent/60
-st.write(f"Time_spent: {minutes:.2f} minutes")
