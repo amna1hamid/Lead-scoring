@@ -107,10 +107,10 @@ if st.button("Predict Conversion"):
     if probability >= 70:
     lead_type = "Hot Lead 🔥"
 
-elif probability >= 40:
+    elif probability >= 40:
     lead_type = "Warm Lead ⚠️"
 
-else:
+    else:
     lead_type = "Cold Lead ❄️"
 
 st.subheader(f"Lead Category: {lead_type}")
