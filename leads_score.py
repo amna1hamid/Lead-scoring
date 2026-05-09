@@ -119,7 +119,7 @@ st.subheader(f"Lead Category: {lead_type}")
     # -----------------------------------
     # BUSINESS INSIGHTS
     # -----------------------------------
-    reasons = []
+reasons = []
 
     if purchase_amount > 15000:
         reasons.append("High purchase activity")
