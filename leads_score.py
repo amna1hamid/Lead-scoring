@@ -54,6 +54,7 @@ st.title("AI Customer Conversion Predictor")
 
 st.metric("Model Accuracy", f"{accuracy:.2f}")
 
+
 purchase_amount = st.number_input(
     "Purchase Amount",
     min_value=0.0,
@@ -104,66 +105,66 @@ if st.button("Predict Conversion"):
     st.progress(int(probability))
 
     # Better interpretation
-if probability >= 70:
-    lead_type = "Hot Lead 🔥"
+    if probability >= 70:
+        lead_type = "Hot Lead 🔥"
 
-elif probability >= 40:
-    lead_type = "Warm Lead ⚠️"
+    elif probability >= 40:
+        lead_type = "Warm Lead ⚠️"
 
-else:
-    lead_type = "Cold Lead ❄️"
+    else:
+        lead_type = "Cold Lead ❄️"
 
-st.subheader(f"Lead Category: {lead_type}")
+    st.subheader(f"Lead Category: {lead_type}")
 
-st.subheader(f"Lead Category: {lead_type}")
     # -----------------------------------
     # BUSINESS INSIGHTS
     # -----------------------------------
-reasons = []
+    reasons = []
 
-if purchase_amount > 15000:
+    if purchase_amount > 15000:
         reasons.append("High purchase activity")
 
-if visits >= 5:
+    if visits >= 5:
         reasons.append("Strong website engagement")
 
-if time_spent > 600:
+    if time_spent > 600:
         reasons.append("Spent significant time on site")
 
-if len(reasons) > 0:
+    if len(reasons) > 0:
         st.subheader("Reasons")
-for r in reasons:
-        st.write("-", r)
+
+        for r in reasons:
+            st.write("-", r)
 
     # -----------------------------------
     # FEATURE IMPORTANCE
     # -----------------------------------
-st.subheader("Feature Importance")
+    st.subheader("Feature Importance")
 
-logistic_model = model.named_steps["logisticregression"]
+    logistic_model = model.named_steps["logisticregression"]
 
-importance_df = pd.DataFrame({
+    importance_df = pd.DataFrame({
         "Feature": X.columns,
         "Importance": logistic_model.coef_[0]
     })
 
-importance_df["Absolute"] = importance_df["Importance"].abs()
+    importance_df["Absolute"] = importance_df["Importance"].abs()
 
-importance_df = importance_df.sort_values(
+    importance_df = importance_df.sort_values(
         by="Absolute",
         ascending=False
     )
 
-st.write(
+    st.write(
         importance_df[["Feature", "Importance"]]
     )
 
-st.bar_chart(
+    st.bar_chart(
         importance_df.set_index("Feature")["Importance"]
     )
 
-top_feature = importance_df.iloc[0]["Feature"]
+    top_feature = importance_df.iloc[0]["Feature"]
 
-st.info(
+    st.info(
         f"The most influential factor for conversion is: {top_feature}"
-    )
+
