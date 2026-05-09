@@ -52,7 +52,7 @@ accuracy = model.score(X_test, y_test)
 # -----------------------------------
 st.title("AI Customer Conversion Predictor")
 
-st.write(f"Model Accuracy: {accuracy:.2f}")
+st.metric("Model Accuracy", f"{accuracy:.2f}")
 
 purchase_amount = st.number_input(
     "Purchase Amount",
@@ -105,14 +105,15 @@ if st.button("Predict Conversion"):
 
     # Better interpretation
     if probability >= 70:
-        st.success("🔥 High chance of conversion")
+    lead_type = "Hot Lead 🔥"
 
-    elif probability >= 40:
-        st.warning("⚠️ Moderate conversion potential")
+elif probability >= 40:
+    lead_type = "Warm Lead ⚠️"
 
-    else:
-        st.error("❌ Low conversion probability")
+else:
+    lead_type = "Cold Lead ❄️"
 
+st.subheader(f"Lead Category: {lead_type}")
     # -----------------------------------
     # BUSINESS INSIGHTS
     # -----------------------------------
