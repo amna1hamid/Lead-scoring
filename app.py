@@ -82,7 +82,8 @@ if st.button("Predict Conversion"):
     st.write(
         f"Conversion Probability: {probability:.2f}%"
     )
-    def save_lead(name, platform, product, score, category):
+
+def save_lead(name, platform, product, score, category):
 
     with open("leads_storage.csv", "a", newline="") as file:
 
