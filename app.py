@@ -3,6 +3,9 @@ import streamlit as st
 import pandas as pd
 
 from model import train_model
+import csv
+
+from datetime import datetime
 
 
 # Load trained model
@@ -79,3 +82,17 @@ if st.button("Predict Conversion"):
     st.write(
         f"Conversion Probability: {probability:.2f}%"
     )
+    def save_lead(name, platform, product, score, category):
+
+    with open("leads_storage.csv", "a", newline="") as file:
+
+        writer = csv.writer(file)
+
+        writer.writerow([
+            name,
+            platform,
+            product,
+            score,
+            category,
+            datetime.now()
+        ])
