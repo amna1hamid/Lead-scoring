@@ -1,11 +1,13 @@
+import csv
+
+from datetime import datetime
+
 import streamlit as st
 
 import pandas as pd
 
 from model import train_model
-import csv
 
-from datetime import datetime
 
 
 # Load trained model
@@ -27,6 +29,18 @@ st.title("AI Customer Conversion Predictor")
 st.metric(
     "Model Accuracy",
     f"{accuracy:.2f}"
+)
+customer_name = st.text_input(
+    "Customer Name"
+)
+
+platform = st.selectbox(
+    "Platform",
+    ["Instagram", "WhatsApp", "Facebook"]
+)
+
+product_interest = st.text_input(
+    "Interested Product"
 )
 
 
@@ -83,9 +97,19 @@ if st.button("Predict Conversion"):
         f"Conversion Probability: {probability:.2f}%"
     )
 
-def save_lead(name, platform, product, score, category):
+def save_lead(
+    name,
+    platform,
+    product,
+    score,
+    category
+):
 
-    with open("leads_storage.csv", "a", newline="") as file:
+    with open(
+        "leads_storage.csv",
+        "a",
+        newline=""
+    ) as file:
 
         writer = csv.writer(file)
 
