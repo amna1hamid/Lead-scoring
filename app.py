@@ -121,3 +121,26 @@ def save_lead(
             category,
             datetime.now()
         ])
+st.subheader("Saved Leads Dashboard")
+
+try:
+
+    leads_df = pd.read_csv(
+        "leads_storage.csv",
+        header=None
+    )
+
+    leads_df.columns = [
+        "Customer Name",
+        "Platform",
+        "Product",
+        "Score",
+        "Category",
+        "Date"
+    ]
+
+    st.dataframe(leads_df)
+
+except:
+
+    st.warning("No leads saved yet.")
