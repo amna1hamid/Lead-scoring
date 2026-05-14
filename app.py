@@ -300,7 +300,7 @@ try:
 )
 
 # Cold leads
-cold_leads = len(
+    cold_leads = len(
     leads_df[
         leads_df["Category"] == "Cold Lead ❄️"
     ]
