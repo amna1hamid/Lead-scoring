@@ -282,9 +282,56 @@ try:
         leads_df,
         use_container_width=True
     )
+# Total leads
+total_leads = len(leads_df)
 
+# Hot leads
+hot_leads = len(
+    leads_df[
+        leads_df["Category"] == "Hot Lead 🔥"
+    ]
+)
+
+# Warm leads
+warm_leads = len(
+    leads_df[
+        leads_df["Category"] == "Warm Lead ⚠️"
+    ]
+)
+
+# Cold leads
+cold_leads = len(
+    leads_df[
+        leads_df["Category"] == "Cold Lead ❄️"
+    ]
+)
+
+st.subheader("Business Insights")
+
+col1, col2, col3, col4 = st.columns(4)
+
+col1.metric(
+    "Total Leads",
+    total_leads
+)
+
+col2.metric(
+    "Hot Leads",
+    hot_leads
+)
+
+col3.metric(
+    "Warm Leads",
+    warm_leads
+)
+
+col4.metric(
+    "Cold Leads",
+    cold_leads
+)
 except:
 
     st.warning(
         "No leads saved yet."
     )
+   
