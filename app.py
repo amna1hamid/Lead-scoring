@@ -7,24 +7,24 @@ from datetime import datetime
 from model import train_model
 
 
-# =========================
-# LOAD MODEL
-# =========================
-model, accuracy = train_model()
-
-
-# =========================
+# ==========================================
 # PAGE CONFIG
-# =========================
+# ==========================================
 st.set_page_config(
     page_title="AI Customer Conversion Predictor",
     layout="centered"
 )
 
 
-# =========================
+# ==========================================
+# LOAD MODEL
+# ==========================================
+model, accuracy = train_model()
+
+
+# ==========================================
 # SAVE LEAD FUNCTION
-# =========================
+# ==========================================
 def save_lead(
     name,
     platform,
@@ -35,7 +35,7 @@ def save_lead(
 
     file_name = "leads_storage.csv"
 
-    # Check if file already exists
+    # Check if file exists
     file_exists = os.path.isfile(file_name)
 
     with open(
@@ -47,7 +47,7 @@ def save_lead(
 
         writer = csv.writer(file)
 
-        # Write headers only once
+        # Write headers once
         if not file_exists:
 
             writer.writerow([
@@ -59,7 +59,7 @@ def save_lead(
                 "Date"
             ])
 
-        # Save lead data
+        # Save lead
         writer.writerow([
             name,
             platform,
@@ -72,15 +72,17 @@ def save_lead(
         ])
 
 
-# =========================
-# TITLE
-# =========================
-st.title("AI Customer Conversion Predictor")
+# ==========================================
+# APP TITLE
+# ==========================================
+st.title(
+    "AI Customer Conversion Predictor"
+)
 
 
-# =========================
+# ==========================================
 # MODEL INFO
-# =========================
+# ==========================================
 with st.expander("Model Information"):
 
     st.metric(
@@ -89,9 +91,9 @@ with st.expander("Model Information"):
     )
 
 
-# =========================
+# ==========================================
 # USER INPUTS
-# =========================
+# ==========================================
 customer_name = st.text_input(
     "Customer Name"
 )
@@ -135,18 +137,20 @@ time_minutes = st.number_input(
 time_spent = time_minutes * 60
 
 
-# =========================
+# ==========================================
 # PREDICTION BUTTON
-# =========================
+# ==========================================
 if st.button("Predict Conversion"):
 
     # Validation
     if customer_name.strip() == "":
+
         st.warning(
             "Please enter customer name."
         )
 
     elif product_interest.strip() == "":
+
         st.warning(
             "Please enter interested product."
         )
@@ -170,21 +174,24 @@ if st.button("Predict Conversion"):
 
         })
 
-        # Predict conversion
+
+        # ==========================================
+        # MODEL PREDICTION
+        # ==========================================
         prediction = model.predict(
             new_lead
         )[0]
 
-        # Predict probability
         probability = (
             model.predict_proba(
                 new_lead
             )[0][1] * 100
         )
 
-        # =========================
+
+        # ==========================================
         # LEAD CATEGORY
-        # =========================
+        # ==========================================
         if probability >= 80:
 
             category = "Very Hot 🔥"
@@ -202,9 +209,9 @@ if st.button("Predict Conversion"):
             category = "Cold Lead 🔵"
 
 
-        # =========================
+        # ==========================================
         # SAVE LEAD
-        # =========================
+        # ==========================================
         save_lead(
             customer_name,
             platform,
@@ -214,9 +221,9 @@ if st.button("Predict Conversion"):
         )
 
 
-        # =========================
-        # DISPLAY RESULT
-        # =========================
+        # ==========================================
+        # RESULT SECTION
+        # ==========================================
         st.subheader(
             "Prediction Result"
         )
@@ -231,9 +238,9 @@ if st.button("Predict Conversion"):
         )
 
 
-        # =========================
-        # BUSINESS INSIGHT
-        # =========================
+        # ==========================================
+        # BUSINESS RECOMMENDATION
+        # ==========================================
         st.subheader(
             "Business Recommendation"
         )
@@ -267,86 +274,151 @@ if st.button("Predict Conversion"):
             )
 
 
-# =========================
+# ==========================================
 # SAVED LEADS DASHBOARD
-# =========================
-st.subheader("Saved Leads Dashboard")
+# ==========================================
+st.subheader(
+    "Saved Leads Dashboard"
+)
 
 try:
 
+    # Load CSV
     leads_df = pd.read_csv(
         "leads_storage.csv"
     )
 
-    if len(leads_df.columns) == 6:
-        leads_df.columns = [
-            "Customer Name",
-            "Platform",
-            "Product",
-            "Score",
-            "Category",
-            "Date"
-        ]
 
-    st.subheader("Lead Category Distribution")
+    # ==========================================
+    # BUSINESS INSIGHTS
+    # ==========================================
+    total_leads = len(
+        leads_df
+    )
+
+    hot_leads = len(
+        leads_df[
+            leads_df["Category"] == "Hot Lead 🔥"
+        ]
+    )
+
+    very_hot_leads = len(
+        leads_df[
+            leads_df["Category"] == "Very Hot 🔥"
+        ]
+    )
+
+    warm_leads = len(
+        leads_df[
+            leads_df["Category"] == "Warm Lead 🟡"
+        ]
+    )
+
+    cold_leads = len(
+        leads_df[
+            leads_df["Category"] == "Cold Lead 🔵"
+        ]
+    )
+
+
+    # ==========================================
+    # METRICS SECTION
+    # ==========================================
+    st.subheader(
+        "Business Insights"
+    )
+
+    col1, col2, col3, col4, col5 = st.columns(5)
+
+    col1.metric(
+        "Total Leads",
+        total_leads
+    )
+
+    col2.metric(
+        "Very Hot",
+        very_hot_leads
+    )
+
+    col3.metric(
+        "Hot Leads",
+        hot_leads
+    )
+
+    col4.metric(
+        "Warm Leads",
+        warm_leads
+    )
+
+    col5.metric(
+        "Cold Leads",
+        cold_leads
+    )
+
+
+    # ==========================================
+    # LEAD CATEGORY DISTRIBUTION
+    # ==========================================
+    st.subheader(
+        "Lead Category Distribution"
+    )
 
     category_counts = (
         leads_df["Category"]
         .value_counts()
     )
-    st.subheader("Platform Performance")
+
+    st.bar_chart(
+        category_counts
+    )
+
+
+    # ==========================================
+    # PLATFORM PERFORMANCE
+    # ==========================================
+    st.subheader(
+        "Platform Performance"
+    )
 
     platform_counts = (
         leads_df["Platform"]
         .value_counts()
     )
-    # Total leads
-    total_leads = len(leads_df)
 
-# Hot leads
-    hot_leads = len(
-    leads_df[
-        leads_df["Category"] == "Hot Lead 🔥"
-    ]
-)
+    st.bar_chart(
+        platform_counts
+    )
 
-# Warm leads
-    warm_leads = len(
-    leads_df[
-        leads_df["Category"] == "Warm Lead ⚠️"
-    ]
-)
 
-# Cold leads
-    cold_leads = len(
-    leads_df[
-        leads_df["Category"] == "Cold Lead ❄️"
-    ]
-)
+    # ==========================================
+    # SHOW DATAFRAME
+    # ==========================================
+    st.subheader(
+        "Saved Leads Data"
+    )
 
-    st.subheader("Business Insights")
+    st.dataframe(
+        leads_df,
+        use_container_width=True
+    )
 
-    col1, col2, col3, col4 = st.columns(4)
 
-    col1.metric(
-    "Total Leads",
-    total_leads
-)
+    # ==========================================
+    # DOWNLOAD CSV BUTTON
+    # ==========================================
+    with open(
+        "leads_storage.csv",
+        "rb"
+    ) as file:
 
-    col2.metric(
-    "Hot Leads",
-    hot_leads
-)
+        st.download_button(
+            label="Download Leads CSV",
+            data=file,
+            file_name="leads_storage.csv",
+            mime="text/csv"
+        )
 
-    col3.metric(
-    "Warm Leads",
-    warm_leads
-)
 
-    col4.metric(
-    "Cold Leads",
-    cold_leads
-)
 except:
 
     st.warning(
