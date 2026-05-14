@@ -270,20 +270,20 @@ if st.button("Predict Conversion"):
 # =========================
 # SAVED LEADS DASHBOARD
 # =========================
-st.subheader("Saved Leads Dashboard")
+        st.subheader("Saved Leads Dashboard")
 
-try:
+       try:
 
-    leads_df = pd.read_csv(
+       leads_df = pd.read_csv(
         "leads_storage.csv"
     )
 
-    st.dataframe(
+       st.dataframe(
         leads_df,
         use_container_width=True
     )
 # Total leads
-    total_leads = len(leads_df)
+       total_leads = len(leads_df)
 
 # Hot leads
     hot_leads = len(
@@ -306,21 +306,21 @@ try:
     ]
 )
 
-st.subheader("Business Insights")
+    st.subheader("Business Insights")
 
-col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.columns(4)
 
-col1.metric(
+    col1.metric(
     "Total Leads",
     total_leads
 )
 
-col2.metric(
+    col2.metric(
     "Hot Leads",
     hot_leads
 )
 
-col3.metric(
+    col3.metric(
     "Warm Leads",
     warm_leads
 )
