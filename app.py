@@ -283,7 +283,7 @@ try:
         use_container_width=True
     )
 # Total leads
-total_leads = len(leads_df)
+    total_leads = len(leads_df)
 
 # Hot leads
 hot_leads = len(
