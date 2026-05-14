@@ -286,22 +286,22 @@ try:
        total_leads = len(leads_df)
 
 # Hot leads
-    hot_leads = len(
-    leads_df[
+       hot_leads = len(
+        leads_df[
         leads_df["Category"] == "Hot Lead 🔥"
     ]
 )
 
 # Warm leads
-    warm_leads = len(
-    leads_df[
-        leads_df["Category"] == "Warm Lead ⚠️"
+        warm_leads = len(
+         leads_df[
+         leads_df["Category"] == "Warm Lead ⚠️"
     ]
 )
 
 # Cold leads
-    cold_leads = len(
-    leads_df[
+        cold_leads = len(
+        leads_df[
         leads_df["Category"] == "Cold Lead ❄️"
     ]
 )
