@@ -278,11 +278,29 @@ try:
         "leads_storage.csv"
     )
 
-    st.dataframe(
-        leads_df,
-        use_container_width=True
+    if len(leads_df.columns) == 6:
+        leads_df.columns = [
+            "Customer Name",
+            "Platform",
+            "Product",
+            "Score",
+            "Category",
+            "Date"
+        ]
+
+    st.subheader("Lead Category Distribution")
+
+    category_counts = (
+        leads_df["Category"]
+        .value_counts()
     )
-# Total leads
+    st.subheader("Platform Performance")
+
+    platform_counts = (
+        leads_df["Platform"]
+        .value_counts()
+    )
+    # Total leads
     total_leads = len(leads_df)
 
 # Hot leads
